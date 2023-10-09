@@ -6,7 +6,6 @@
   <artifactId>situ_Prj_Parent</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-
   <!-- 打包方式， 父工程以pom-->
   <packaging>pom</packaging>
 
@@ -15,6 +14,7 @@
     <!--公共模块-->
     <module>common</module>
     <module>boot</module>
+    <module>frontPage</module>
   </modules>
 
   <properties>
@@ -31,6 +31,19 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!--阿里巴巴druid数据源-->
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>druid</artifactId>
+      <version>1.1.9</version>
     </dependency>
 
   </dependencies>
