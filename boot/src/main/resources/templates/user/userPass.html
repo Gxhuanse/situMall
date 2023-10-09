@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/layui.css}">
+        <script type="text/javascript" th:src="@{/js/layui.js}"></script>
+        <style>
+            .fm{
+                margin-top: 40px;
+                width: 50%;
+            }
+        </style>
+    </head>
+    <body>
+        <form class="layui-form fm">
+<!--            <div class="layui-form-item" style="display: none" >-->
+            <div class="layui-form-item" >
+                <div class="layui-input-block">
+                    <input type="text" name="id" th:value="${session?.user?.id}" disabled  placeholder="请输入" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">旧密码</label>
+                <div class="layui-input-block">
+                    <input type="text" name="oldpass" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">新密码</label>
+                <div class="layui-input-block">
+                    <input type="text" id="newpass" name="newpass" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">确认密码</label>
+                <div class="layui-input-block">
+                    <input type="text" id="repass" name="repass" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="submit" class="layui-btn" lay-submit lay-filter="demo1">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </body>
+    <script>
+        layui.use(['form', 'laydate', 'util'], function(){
+            var form = layui.form;
+            var layer = layui.layer;
+            var laydate = layui.laydate;
+            var util = layui.util;
+            var $ = layui.$;
+            // 自定义验证规则
+            form.verify({
+                pass: [
+                    /^[\S]{6,12}$/,
+                    '密码必须6到12位，且不能出现空格'
+                ]
+            });
+            // 提交事件
+            form.on('submit(demo1)', function(data){
+                debugger
+                var field = data.field; // 获取表单字段值
+                // 显示填写结果，仅作演示用
+                // layer.alert(JSON.stringify(field), {
+                //     title: '当前填写的字段值'
+                // });
+                //防止重复点击
+                $(".layui-btn").addClass('layui-btn-disabled');
+                $(".layui-btn").attr('disabled','disabled');
+                // 此处可执行 Ajax 等操作
+                $.ajax({
+                    url:'/BootStart/User/updatePass',
+                    data:field,
+                    type:'post',
+                    dataType:'json',
+                    success:function (result){
+                        if (result.code===200){
+                            layer.msg("修改成功");
+                            window.parent.location.href="http://localhost:8080/BootStart/Common/logOut";
+                        }else {
+                            layer.msg(result.msg);
+                        }
+                        //解放提交按钮
+                        $(".layui-btn").removeClass('layui-btn-disabled');
+                        $(".layui-btn").removeAttr('disabled');
+                    },
+                    error:function (result) {
+                        layer.msg(result.msg);
+                    }
+                })
+                return false; // 阻止默认 form 跳转
+            });
+        });
+        document.getElementById("repass").onblur=function (){
+            var repass = document.getElementById("repass").value;
+            var newpass = document.getElementById("newpass").value;
+            if (repass===newpass){
+            }else {
+                alert("新密码不一致");
+            }
+        }
+    </script>
+</html>

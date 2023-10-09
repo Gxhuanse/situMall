@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/layui.css}">
+        <script type="text/javascript" th:src="@{/js/layui.js}"></script>
+        <style>
+            .fm{
+                margin-top: 40px;
+                width: 50%;
+            }
+        </style>
+    </head>
+    <body>
+        <form class="layui-form fm">
+            <div class="layui-form-item">
+                <label class="layui-form-label">商品名</label>
+                <div class="layui-input-block">
+                    <input type="text" id="ctName" name="productName" lay-verify="required" placeholder="请输入分类名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label layui-form-text">商品描述</label>
+                <div class="layui-input-block">
+                    <input type="text" name="productDescribe" lay-verify="required" placeholder="请输入分类描述" autocomplete="off" class="layui-textarea">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">商品版本</label>
+                <div class="layui-input-block">
+                    <input type="text" name="version" lay-verify="required" placeholder="请输入分类描述" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">商品类型</label>
+                <div class="layui-input-block">
+                    <input type="text" name="type" lay-verify="required" placeholder="请输入分类描述" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">分类</label>
+                <div class="layui-col-md5">
+                    <select name="parentId" lay-filter="parentId">
+                    </select>
+                </div>
+                <div class="layui-col-md5">
+                    <select name="categoryId">
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">标价</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="number" name="markPrice" placeholder="" autocomplete="off" class="layui-input" min="0" step="1" lay-affix="number">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">售价</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="number" name="sellPrice" placeholder="" autocomplete="off" class="layui-input" min="0" step="1" lay-affix="number">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">数量</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="number" name="count" placeholder="" autocomplete="off" class="layui-input" min="0" step="1" lay-affix="number">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">是否推荐</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="recom" value="0" title="是" checked>
+                    <input type="radio" name="recom" value="1" title="否">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-upload">
+                    <button type="button" class="layui-btn" id="ID-upload-demo-btn-2">
+                        <i class="layui-icon layui-icon-upload"></i> 多图片上传
+                    </button>
+                    <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 11px;">
+                        预览图：
+                        <div class="layui-upload-list" id="upload-demo-preview"></div>
+                    </blockquote>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="submit" class="layui-btn" lay-submit lay-filter="demo1">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </body>
+    <script>
+        $=layui.$;
+        // document.getElementById("ctName").onblur=function (){
+        //     var value = document.getElementById("ctName").value;
+        //     $.ajax({
+        //         url:'/BootStart/Product/selectProductByName',
+        //         data: {ctName:value},
+        //         type:'post',
+        //         dataType:'json',
+        //         success:function (result){
+        //             if (result.code===200){
+        //                 layer.msg("名称可用");
+        //             }else {
+        //                 layer.msg(result.msg);
+        //             }
+        //         },
+        //         error:function (result) {
+        //             layer.msg(result.msg);
+        //         }
+        //     })
+        // }
+        layui.use(function(){
+            var layer = layui.layer;
+            var form = layui.form;
+            var upload = layui.upload;
+            var element = layui.element;
+            // var $ = layui.$;
+            // 提交事件
+            form.on('submit(demo1)', function(data){
+                var pics=[];
+                $('#upload-demo-preview img').each(function (){
+                    var  pic=$(this).attr('alt');
+                    pics.push(pic);
+                })
+                var field = data.field; // 获取表单字段值
+                field.pics=pics;
+                //防止重复点击
+                $(".layui-btn").addClass('layui-btn-disabled');
+                $(".layui-btn").attr('disabled','disabled');
+                // 此处可执行 Ajax 等操作
+                $.ajax({
+                    url:'/BootStart/Product/productAdd',
+                    data:JSON.stringify(field),
+                    contentType:"application/json;charset=UTF-8",
+                    type:'post',
+                    dataType:'json',
+                    success:function (result){
+                        if (result.code===200){
+                            layer.msg("添加成功");
+                        }else {
+                            layer.msg(result.msg);
+                        }
+                        //解放提交按钮
+                        $(".layui-btn").removeClass('layui-btn-disabled');
+                        $(".layui-btn").removeAttr('disabled');
+                    },
+                    error:function (result) {
+                        layer.msg(result.msg);
+                    }
+                })
+                return false; // 阻止默认 form 跳转
+            });
+
+            // 多图片上传
+            upload.render({
+                elem: '#ID-upload-demo-btn-2',
+                url: '/BootStart/ModelData/SaveImg', // 实际使用时改成您自己的上传接口即可。
+                field: 'myFile',
+                multiple: true,
+                before: function(obj){
+                    // 预读本地文件示例，不支持ie8
+                    obj.preview(function(index, file, result){
+                        // $('#upload-demo-preview').append('<img src="'+ result +'" alt="'+ file.name +'" style="width: 90px; height: 90px;">')
+                    });
+                },
+                done: function(res){
+                    // 上传完毕
+                    $('#upload-demo-preview').append('<img src="/BootStart/img/upload/'+ res.res +'" alt="'+ res.res +'" style="width: 90px; height: 90px;">')
+
+                    // …
+                }
+            });
+
+            //一级分类
+            $.ajax({
+                url:'/BootStart/Category/selectCategoryByParentId/0',
+                type:'get',
+                dataType:'json',
+                success:function (result){
+                    var html='<option value="">无父类</option>';
+                    if (result.code===0){
+                        $.each(result.res,function(index, item) {
+                            html +='<option value="'+item.id+'">'+item.ctName+'</option>';
+                        })
+                        $('[name="parentId"]').html(html);
+                        form.render();
+                    }
+                },
+                error:function (result){
+                    layer.msg(result.msg);
+                }
+            });
+            //二级分类
+            form.on('select(parentId)', function(data){
+                var value = data.value; // 获取被选中的值
+                if (value){
+                    $.ajax({
+                        url:'/BootStart/Category/selectCategoryByParentId/'+value,
+                        type:'get',
+                        dataType:'json',
+                        success:function (result){
+                            var html='<option value="0">无父类</option>';
+                            if (result.code===0){
+                                $.each(result.res,function(index, item) {
+                                    html +='<option value="'+item.id+'">'+item.ctName+'</option>';
+                                })
+                                $('[name="categoryId"]').html(html);
+                                form.render();
+                            }
+                        }
+                    })
+                }
+            });
+        });
+    </script>
+</html>

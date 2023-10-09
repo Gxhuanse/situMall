@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/layui.css}">
+        <script type="text/javascript" th:src="@{/js/layui.js}"></script>
+    </head>
+    <style>
+        .layui-table-cell{
+            /*覆盖layUI的高度设置*/
+            height: auto;
+        }
+        .fm{
+            width: 70%;
+            padding-top: 35px;
+            padding-left: 40px;
+        }
+    </style>
+    <body>
+        <!--表格对应的搜索栏-->
+        <form class="layui-form layui-row layui-col-space16 fm">
+            <div class="layui-col-md4">
+                <div class="layui-input-wrap">
+                    <div class="layui-input-prefix">
+                        <i class="layui-icon layui-icon-username"></i>
+                    </div>
+                    <input type="text" name="ctName"  placeholder="类别名称" class="layui-input" lay-affix="clear">
+                </div>
+            </div>
+            <div class="layui-col-md4">
+                <div class="layui-input-wrap">
+                    <div class="layui-input-prefix">
+                        <i class="layui-icon layui-icon-date"></i>
+                    </div>
+                    <input type="text" name="ctDiscrip"  placeholder="类别描述" class="layui-input demo-table-search-date">
+                </div>
+            </div>
+            <div class="layui-col-md4">
+                <div class="layui-input-wrap">
+                    <select name="parentId">
+                        <option value="-1">所有类</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-col-md4">
+                <div class="layui-input-wrap">
+                    <select name="ctRecom">
+                        <option value="-1">不限推荐</option>
+                        <option value="1">推荐</option>
+                        <option value="0">不推荐</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-col-md4">
+                <div class="layui-input-wrap">
+                    <select name="ctStatus">
+                        <option value="-1">不限状态</option>
+                        <option value="1">上架</option>
+                        <option value="0">下架</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-btn-container layui-col-xs12">
+                <button class="layui-btn" lay-submit lay-filter="table-search">搜索</button>
+                <button type="reset" class="layui-btn layui-btn-primary">清除</button>
+            </div>
+        </form>
+
+        <div style="padding: 16px">
+            <table class="layui-hide" id="user" lay-filter="user_filter"></table>
+        </div>
+
+        <!--表格每行右侧的按钮样式-->
+        <script type="text/html" id="barDemo">
+            <div class="layui-clear-space">
+                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                <a class="layui-btn layui-btn-xs" lay-event="reco">{{=d.ctRecom==1?"取消":"设为"}}推荐</a>
+                <a class="layui-btn layui-btn-xs" lay-event="rest">{{=d.ctStatus==1?"下":"上"}}架</a>
+                <a class="layui-btn layui-btn-xs" lay-event="dele">删除</a>
+            </div>
+        </script>
+
+        <!--表格中'状态'栏的样式-->
+        <script type="text/html" id="status-switch" th:inline="NONE">
+            <!-- 这里的 checked 的状态值判断仅作为演示 -->
+            <input type="checkbox" name="status" value="{{d.id}}" title="启用|禁用"
+                   lay-skin="switch"
+                   lay-filter="status-switch"
+                   {{=d.userStatus==1?"checked":""}}
+            />
+        </script>
+
+        <script th:inline="NONE">
+            layui.use(function (){
+                var  tb_user=layui.table;
+                var form = layui.form;
+                $=layui.$;//全局变量
+                // 表格渲染
+                tb_user.render({
+                    elem:'#user',
+                    url:'/BootStart/Category/selectByByPageConditionAndParentName',
+                    data:'',
+                    // toolbar: '#toolbarDemo',//表格上方自定义工具栏
+                    defaultToolbar:['filter','print','exports'],//表格上方默认工具栏
+                    // defaultToolbar:[],//消除表格上方默认工具栏
+                    cols: [[ //表格字段选项栏
+                        {type: 'checkbox', fixed: 'left'},//最左侧复选框
+                        {field: 'id', title: 'ID', width: 80, sort: true},
+                        // {field: 'userImgid', title: '头像图片', width: 130, templet:function (d){
+                        //         return '<img src="/BootStart/img/upload/'+d.userImgid+'">';
+                        //     }},
+                        {field: 'ctName', title: '类别名称', width: 110},
+                        {field: 'ctDiscrip', title: '类别描述', width: 350, sort: true},
+                        {field: 'parentCatName', title: '父级分类', width: 130, sort: true},
+                        {field: 'ctRecom', title: '是否推荐', width: 110, templet:function (d){
+                                if (d.ctRecom===1){
+                                    return '<span style="color: #07bd07">推荐</span>';
+                                }
+                                if (d.ctRecom===0){
+                                    return '<span style="color: #f80303">不推荐</span>';
+                                }
+                            }},
+                        {field: 'ctStatus', title: '类别状态', width: 110, templet:function (d){
+                                if (d.ctStatus===1){
+                                    return '<span style="color: #f8a6b4">上架</span>';
+                                }
+                                if (d.ctStatus===0){
+                                    return '<span style="color: #4242ee">下架</span>';
+                                }
+                            }},
+                        {fixed: 'right', title:'操作', width: 240, minWidth: 240, toolbar: '#barDemo'}//单元格操作栏
+                    ]],
+                    page:{
+                        limit:10,
+                        limits:[10, 20, 30],
+                        group:3,
+                        layout:[ 'count', 'prev', 'page', 'next', 'limit','skip'],
+                    },
+                    request: {
+                        pageName: 'curr', // 页码的参数名称，默认：page
+                        limitName: 'nums' // 每页数据条数的参数名，默认：limit
+                    },
+                    parseData: function(reslt){ // res 即为原始返回的数据
+                        return {
+                            "code": reslt.code, // 解析接口状态
+                            "msg": reslt.msg, // 解析提示文本
+                            "count": reslt.res.count, // 解析数据长度
+                            "data": reslt.res.list // 解析数据列表
+                        };
+                    },
+                });
+
+                //表格上方条件搜索的表单提交
+                form.on('submit(table-search)', function(data){
+                    var field = data.field; // 获得表单字段
+                    // 执行搜索重载
+                    tb_user.reload('user', {
+                        page: {
+                            curr: 1, // 重新从第 1 页开始
+                            nums:10
+                        },
+                        where: field // 搜索的字段
+                    });
+                    // layer.msg('搜索成功<br>此处为静态模拟数据，实际使用时换成真实接口即可');
+                    layer.msg('搜索成功<br>');
+                    return false; // 阻止默认 form 跳转
+                });
+
+                //表格列中禁用的事件，未启用
+                form.on('switch(status-switch)', function(obj){
+                    var id = this.value
+                    var status=this.checked
+                    layer.tips(id + ' ' + name + ': '+ obj.elem.checked, obj.othis);
+                    layer.confirm('确认'+(!status?"禁":"启")+'用该用户 [id: '+ id +'] 么',{icon:3,title:'提示'}, function(index){
+                        $('[name="status"]').attr('checked','');
+                        layer.close(index);
+                    });
+                });
+
+                // 单元格右侧工具栏的事件
+                tb_user.on('tool(user_filter)', function(obj){
+                    var data = obj.data; // 获得当前行数据
+                    category=data;
+                    switch (obj.event){
+                        case 'edit':layer.open({
+                            title: '编辑 - id:'+ data.id,
+                            type: 2,
+                            area: ['80%','80%'],
+                            content: '/BootStart/ModelData/categoryUpdata/'+data.id,//model方式获取修改页面数据
+                            // content: '/BootStart/Common/categoryUpdata',
+                            end:function (){tb_user.reload('user');}//重新加载表格
+                        });break;
+                        case 'reco':layer.confirm('确认'+(data.ctRecom?"取消":"设置")+'该类别 ['+ data.ctName +'] 推荐么',{icon:3,title:'提示'}, function(index){
+                            // 向服务端发送指令
+                            var id=data.id;
+                            var stus=(data.ctRecom?"0":"1")
+                            $.ajax({
+                                url:'/BootStart/Category/categoryUpdata',
+                                type:'post',
+                                data: {
+                                    id:id,
+                                    ctRecom:stus
+                                },
+                                dataType:'json',
+                                success:function (result){
+                                    if (result.code===200){
+                                        layer.msg("操作成功");
+                                    }else{
+                                        layer.msg(result.msg);
+                                    }
+                                    tb_user.reload('user')
+                                },
+                                error:function (result){
+                                    layer.msg(result.msg);
+                                }
+                            });
+                            layer.close(index);
+                        });break;
+                        case 'rest':layer.confirm('确认'+(data.ctStatus?"下架":"上架")+'该类别 ['+ data.ctName +'] 推荐么',{icon:3,title:'提示'},function(pass, index){
+                            var id=data.id;
+                            var stus=(data.ctStatus?"0":"1")
+                            $.ajax({
+                                url:'/BootStart/Category/categoryUpdata',
+                                type:'post',
+                                data: {
+                                    id:id,
+                                    ctStatus:stus
+                                },
+                                dataType:'json',
+                                success:function (result){
+                                    if (result.code===200){
+                                        layer.msg("操作成功");
+                                    }else{
+                                        layer.msg(result.msg);
+                                    }
+                                    tb_user.reload('user')
+                                },
+                                error:function (result){
+                                    layer.msg(result.msg);
+                                }
+                            });
+                            layer.close(index);
+                        });break;
+                        case 'dele':layer.confirm('真的删除类别 ['+ data.ctName +'] 么',{icon:3,title:'提示'}, function(index){
+                            // 向服务端发送删除指令
+                            var id=data.id;
+                            // alert(id)
+                            $.ajax({
+                                url:'/BootStart/Category/categoryDelete',
+                                type:'post',
+                                data: {id:id},
+                                dataType:'json',
+                                success:function (result){
+                                    if (result.code===200){
+                                        layer.msg("删除成功");
+                                    }else{
+                                        layer.msg(result.msg);
+                                    }
+                                    tb_user.reload('user')
+                                },
+                                error:function (result){
+                                    layer.msg(result.msg);
+                                }
+                            });
+                            // obj.del(); // 删除对应行（tr）的DOM结构
+                            layer.close(index);
+                        });break;
+                    }
+                });
+                //表格上方工具栏的事件
+                tb_user.on('toolbar(user_filter)', function(obj){
+                    var id = obj.config.id;
+                    var checkStatus = tb_user.checkStatus(id);
+                    var othis = lay(this);
+                    switch(obj.event){
+                        case 'getCheckData':
+                            var data = checkStatus.data;
+                            layer.alert(layui.util.escape(JSON.stringify(data)));
+                            break;
+                        case 'getData':
+                            var getData = tb_user.getData(id);
+                            console.log(getData);
+                            layer.alert(layui.util.escape(JSON.stringify(getData)));
+                            break;
+                        case 'addData':
+                            var dataid = checkStatus.data;
+                            layer.open({
+                                title: '编辑 - id:'+ dataid,
+                                type: 1,
+                                area: ['80%','80%'],
+                                content: '<div style="padding: 16px;">自定义表单元素</div>'
+                            }); break;
+                        case 'LAYTABLE_TIPS':
+                            layer.alert('自定义工具栏图标按钮');
+                            break;
+                    }
+                });
+
+                $.ajax({
+                    url:'/BootStart/Category/selectCategoryByParentId/0',
+                    type:'get',
+                    dataType:'json',
+                    success:function (result){
+                        var html='<option value="-1">不限父类</option><option value="0">父类</option>';
+                        if (result.code===0){
+                            $.each(result.res,function(index, item) {
+                                html +='<option value="'+item.id+'">'+item.ctName+'</option>';
+                            })
+                            $('[name="parentId"]').html(html);
+                            form.render();
+                        }
+                    },
+                    error:function (result){
+                        layer.msg(result.msg);
+                    }
+                });
+            })
+        </script>
+    </body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/layui.css}">
+        <script type="text/javascript" th:src="@{/js/layui.js}"></script>
+        <style>
+            .fm{
+                margin-top: 40px;
+                width: 50%;
+            }
+        </style>
+    </head>
+    <body>
+        <form class="layui-form fm">
+            <div class="layui-form-item" >
+                <label class="layui-form-label">id</label>
+                <div class="layui-input-block">
+                    <input type="text" name="id" th:value="${category?.get(0)?.id}" disabled lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">分类名</label>
+                <div class="layui-input-block">
+                    <input type="text" id="ctName" name="ctName" th:value="${category?.get(0)?.ctName}"  lay-verify="required" placeholder="请输入分类名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label layui-form-text">分类描述</label>
+                <div class="layui-input-block">
+                    <input type="text" name="ctDiscrip" th:value="${category?.get(0)?.ctDiscrip}" lay-verify="required" placeholder="请输入分类描述" autocomplete="off" class="layui-textarea">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="submit" class="layui-btn" lay-submit lay-filter="demo1">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </body>
+    <script>
+        $=layui.$;
+        document.getElementById("ctName").onblur=function (){
+            var value = document.getElementById("ctName").value;
+            $.ajax({
+                url:'/BootStart/Category/selectCategoryByName',
+                data: {ctName:value},
+                type:'post',
+                dataType:'json',
+                success:function (result){
+                    debugger
+                    if (result.code===200){
+                        layer.msg("名称可用");
+                    }else if (result.res.length===1){
+                        layer.msg("新旧名称重复");
+                    }else {
+                        layer.msg(result.msg);
+                    }
+                },
+                error:function (result) {
+                    layer.msg(result.msg);
+                }
+            })
+        }
+        layui.use(function(){
+            var layer = layui.layer;
+            var form = layui.form;
+            var $ = layui.$;
+            form.on('submit(demo1)', function(data){
+                var field = data.field; // 获取表单字段值
+                $(".layui-btn").addClass('layui-btn-disabled');
+                $(".layui-btn").attr('disabled','disabled');
+                $.ajax({
+                    url:'/BootStart/Category/categoryUpdata',
+                    data:field,
+                    type:'post',
+                    dataType:'json',
+                    success:function (result){
+                        if (result.code===200){
+                            layer.msg("修改成功");
+                            parent.layer.closeAll()
+                        }else {
+                            layer.msg(result.msg);
+                        }
+                        //解放提交按钮
+                        $(".layui-btn").removeClass('layui-btn-disabled');
+                        $(".layui-btn").removeAttr('disabled');
+                    },
+                    error:function (result) {
+                        layer.msg(result.msg);
+                    }
+                })
+                return false; // 阻止默认 form 跳转
+            });
+        });
+    </script>
+</html>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxh.mapper.UserMapper">
+
+
+    <sql id="colName">
+        id,user_email,user_imgid,user_name,user_nickname,user_pass
+    </sql>
+
+    <!--    sql查询语句-->
+    <select id="selectAllUser" resultType="com.gxh.entity.UserBean">
+        select <include refid="colName"/> from situ_prj.tb_user ;
+    </select>
+
+    <select id="selectUserByPageCondition" resultType="com.gxh.entity.UserBean">
+        select *
+        from situ_prj_02_boot.tb_user
+        <where>
+            <if test="true">and deleted=0</if>
+            <if test="userNickname!=null and userNickname!=''">
+                and user_nickname like concat('%',#{userNickname},'%')
+            </if>
+            <if test="userStatus!=null and userStatus!=-1">
+                and user_status=#{userStatus}
+            </if>
+            <if test="userType!=null and userType!=-1">
+                and user_type=#{userType}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
+        insert into situ_prj_02_boot.tb_user(user_name, user_nickname, user_pass, user_type, user_sex, user_email, user_phone)
+        VALUES(#{user_name},#{user_nickname},#{user_pass},#{user_type},#{user_sex},#{user_email},#{user_phone});
+    </insert>
+
+    <update id="updateUser">
+        update situ_prj_02_boot.tb_user
+        <set>
+            <if test="userName!=null and userName!=''">
+                user_name=#{userName},
+            </if>
+            <if test="userNickname!=null and userNickname!=''">
+                user_nickname=#{userNickname},
+            </if>
+            user_type=#{userType},
+            user_sex=#{userSex},
+            <if test="userEmail!=null and userEmail!=''">
+                user_email=#{userEmail},
+            </if>
+            <if test="userPhone!=null and userPhone!=''">
+                user_phone=#{userPhone},
+            </if>
+            <if test="userImgid!=null and userImgid!=''">
+                user_imgid=#{userImgid},
+            </if>
+            <if test="true">
+                deleted=0,
+            </if>
+        </set>
+        where id=#{id};
+    </update>
+
+
+</mapper>

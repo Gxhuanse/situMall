@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/layui.css}">
+        <script type="text/javascript" th:src="@{/js/layui.js}"></script>
+    </head>
+    <style>
+        .layui-table-cell{
+            /*覆盖layUI的高度设置*/
+            height: auto;
+        }
+        .fm{
+            width: 70%;
+            padding-top: 35px;
+            padding-left: 40px;
+        }
+    </style>
+    <body>
+        <!--表格对应的搜索栏-->
+        <form class="layui-form layui-row layui-col-space16 fm">
+            <div class="layui-col-md4">
+                <div class="layui-input-wrap">
+                    <div class="layui-input-prefix">
+                        <i class="layui-icon layui-icon-username"></i>
+                    </div>
+                    <input type="text" name="userNickname"  placeholder="用户名" class="layui-input" lay-affix="clear">
+                </div>
+            </div>
+            <div class="layui-col-md4">
+                <div class="layui-input-wrap">
+                    <input type="text" name="userStatus" placeholder="状态" lay-affix="clear" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-col-md4">
+                <div class="layui-input-wrap">
+                    <div class="layui-input-prefix">
+                        <i class="layui-icon layui-icon-date"></i>
+                    </div>
+                    <input type="text" name="userType"  placeholder="类型" class="layui-input demo-table-search-date">
+                </div>
+            </div>
+            <div class="layui-btn-container layui-col-xs12">
+                <button class="layui-btn" lay-submit lay-filter="table-search">搜索</button>
+                <button type="reset" class="layui-btn layui-btn-primary">清除</button>
+            </div>
+        </form>
+
+        <div style="padding: 16px">
+            <table class="layui-hide" id="user" lay-filter="user_filter"></table>
+        </div>
+
+        <!--表格每行右侧的按钮样式-->
+        <script type="text/html" id="barDemo">
+            <div class="layui-clear-space">
+                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                <a class="layui-btn layui-btn-xs" lay-event="forb">{{=d.userStatus==1?"禁":"启"}}用</a>
+                <a class="layui-btn layui-btn-xs" lay-event="rest">重置</a>
+                <a class="layui-btn layui-btn-xs" lay-event="dele">删除</a>
+            </div>
+        </script>
+
+        <!--表格中'状态'栏的样式-->
+        <script type="text/html" id="status-switch" th:inline="NONE">
+            <!-- 这里的 checked 的状态值判断仅作为演示 -->
+            <input type="checkbox" name="status" value="{{d.id}}" title="启用|禁用"
+                   lay-skin="switch"
+                   lay-filter="status-switch"
+                   {{=d.userStatus==1?"checked":""}}
+            />
+        </script>
+
+        <script th:inline="NONE">
+            layui.use(function (){
+                var  tb_user=layui.table;
+                var form = layui.form;
+                $=layui.$;//全局变量
+                // 表格渲染
+                tb_user.render({
+                    elem:'#user',
+                    url:'/BootStart/User/selectByByPageCondition',
+                    data:'',
+                    // toolbar: '#toolbarDemo',//表格上方自定义工具栏
+                    defaultToolbar:['filter','print','exports'],//表格上方默认工具栏
+                    // defaultToolbar:[],//消除表格上方默认工具栏
+                    cols: [[ //表格字段选项栏
+                        {type: 'checkbox', fixed: 'left'},//最左侧复选框
+                        {field: 'id', title: 'ID', width: 80, sort: true},
+                        {field: 'userImgid', title: '头像图片', width: 130, templet:function (d){
+                                return '<img src="/BootStart/img/upload/'+d.userImgid+'">';
+                            }},
+                        {field: 'userName', title: '真实姓名', width: 110},
+                        {field: 'userNickname', title: '用户名', width: 110, sort: true},
+                        {field: 'userPass', title: '用户密码', width: 130, sort: true},
+                        {field: 'userStatus', title: '用户状态', width: 110, templet:function (d){
+                                if (d.userStatus===1){
+                                    return '<span style="color: #07bd07">启用</span>';
+                                }
+                                if (d.userStatus===0){
+                                    return '<span style="color: #f80303">禁用</span>';
+                                }
+                            }},
+                        {field: 'userSex', title: '用户性别', width: 110, templet:function (d){
+                                if (d.userSex===1){
+                                    return '<span style="color: #f8a6b4">女♀</span>';
+                                }
+                                if (d.userSex===0){
+                                    return '<span style="color: #4242ee">男♂</span>';
+                                }
+                            }},
+                        {field: 'userType', title: '用户类别', width: 110, templet:function (d){
+                                if (d.userType===0){
+                                    return '<span style="color: #8a8a86"><i class="layui-icon layui-icon-set-fill"/>管理员</span>';
+                                }
+                                if (d.userType===1){
+                                    return '<span style="color: #cb0606"><i class="layui-icon layui-icon-username"/>商家用户</span>';
+                                }
+                                if (d.userType===2){
+                                    return '<span style="color: #020273"><i class="layui-icon layui-icon-friends"/>顾客用户</span>';
+                                }
+                            }},
+                        {field: 'userEmail', title: '邮箱', width: 160, sort: true},
+                        {field: 'userPhone', title: '手机号', width: 130, sort: true},
+                        // {title: '状态', width:95, templet: '#status-switch'},
+                        {fixed: 'right', title:'操作', width: 200, minWidth: 200, toolbar: '#barDemo'}//单元格操作栏
+                    ]],
+                    page:{
+                        limit:10,
+                        limits:[10, 20, 30],
+                        group:3,
+                        layout:[ 'count', 'prev', 'page', 'next', 'limit','skip'],
+                    },
+                    request: {
+                        pageName: 'curr', // 页码的参数名称，默认：page
+                        limitName: 'nums' // 每页数据条数的参数名，默认：limit
+                    },
+                    parseData: function(reslt){ // res 即为原始返回的数据
+                        return {
+                            "code": reslt.code, // 解析接口状态
+                            "msg": reslt.msg, // 解析提示文本
+                            "count": reslt.res.count, // 解析数据长度
+                            "data": reslt.res.list // 解析数据列表
+                        };
+                    },
+                });
+
+                //表格上方条件搜索的表单提交
+                form.on('submit(table-search)', function(data){
+                    var field = data.field; // 获得表单字段
+                    // 执行搜索重载
+                    tb_user.reload('user', {
+                        page: {
+                            curr: 1, // 重新从第 1 页开始
+                            nums:10
+                        },
+                        where: field // 搜索的字段
+                    });
+                    // layer.msg('搜索成功<br>此处为静态模拟数据，实际使用时换成真实接口即可');
+                    layer.msg('搜索成功<br>');
+                    return false; // 阻止默认 form 跳转
+                });
+
+                //表格列中禁用的事件，未启用
+                form.on('switch(status-switch)', function(obj){
+                    var id = this.value
+                    var status=this.checked
+                    layer.tips(id + ' ' + name + ': '+ obj.elem.checked, obj.othis);
+                    layer.confirm('确认'+(!status?"禁":"启")+'用该用户 [id: '+ id +'] 么',{icon:3,title:'提示'}, function(index){
+                        $('[name="status"]').attr('checked','');
+                        layer.close(index);
+                    });
+                });
+
+                // 单元格右侧工具栏的事件
+                tb_user.on('tool(user_filter)', function(obj){
+                    var data = obj.data; // 获得当前行数据
+                    user=data;
+                    switch (obj.event){
+                        case 'edit':layer.open({
+                            title: '编辑 - id:'+ data.id,
+                            type: 2,
+                            area: ['80%','80%'],
+                            content: '/BootStart/Common/userUpdata',
+                            end:function (){tb_user.reload('user_filter');}//重新加载表格
+                        });break;
+                        case 'forb':layer.confirm('确认'+(data.userStatus?"禁":"启")+'用该用户 [id: '+ data.userNickname +'] 么',{icon:3,title:'提示'}, function(index){
+                            // 向服务端发送删除指令
+                            var id=data.id;
+                            var stus=(data.userStatus?"0":"1")
+                            $.ajax({
+                                url:'/BootStart/User/updataStatus',
+                                type:'post',
+                                data: {
+                                    id:id,
+                                    userStatus:stus
+                                },
+                                dataType:'json',
+                                success:function (result){
+                                    if (result.code===200){
+                                        layer.msg("禁用成功");
+                                    }else{
+                                        layer.msg(result.msg);
+                                    }
+                                    tb_user.reload('user')
+                                },
+                                error:function (result){
+                                    layer.msg(result.msg);
+                                }
+                            });
+                            layer.close(index);
+                        });break;
+                        case 'rest':layer.prompt({title: '重置该用户：'+ data.userNickname +'  密码', formType: 1}, function(pass, index){
+                            var id=data.id;
+                            $.ajax({
+                                url:'/BootStart/User/resetPass',
+                                type:'post',
+                                data: {
+                                    id:id,
+                                    userPass:pass
+                                },
+                                dataType:'json',
+                                success:function (result){
+                                    if (result.code===200){
+                                        layer.msg("重置成功");
+                                    }else{
+                                        layer.msg(result.msg);
+                                    }
+                                    tb_user.reload('user')
+                                },
+                                error:function (result){
+                                    layer.msg(result.msg);
+                                }
+                            });
+                            layer.close(index);
+                        });break;
+                        case 'dele':layer.confirm('真的删除行 [id: '+ data.id +'] 么',{icon:3,title:'提示'}, function(index){
+                            // 向服务端发送删除指令
+                            var id=data.id;
+                            alert(id)
+                            $.ajax({
+                                url:'/BootStart/User/userDelete',
+                                type:'post',
+                                data: {id:id},
+                                dataType:'json',
+                                success:function (result){
+                                    if (result.code===200){
+                                        layer.msg("删除成功");
+                                    }else{
+                                        layer.msg(result.msg);
+                                    }
+                                },
+                                error:function (result){
+                                    layer.msg(result.msg);
+                                }
+                            });
+                            obj.del(); // 删除对应行（tr）的DOM结构
+                            layer.close(index);
+                        });break;
+                    }
+                });
+                //表格上方工具栏的事件
+                tb_user.on('toolbar(user_filter)', function(obj){
+                    var id = obj.config.id;
+                    var checkStatus = tb_user.checkStatus(id);
+                    var othis = lay(this);
+                    switch(obj.event){
+                        case 'getCheckData':
+                            var data = checkStatus.data;
+                            layer.alert(layui.util.escape(JSON.stringify(data)));
+                            break;
+                        case 'getData':
+                            var getData = tb_user.getData(id);
+                            console.log(getData);
+                            layer.alert(layui.util.escape(JSON.stringify(getData)));
+                            break;
+                        case 'addData':
+                            var dataid = checkStatus.data;
+                            layer.open({
+                                title: '编辑 - id:'+ dataid,
+                                type: 1,
+                                area: ['80%','80%'],
+                                content: '<div style="padding: 16px;">自定义表单元素</div>'
+                            }); break;
+                        case 'LAYTABLE_TIPS':
+                            layer.alert('自定义工具栏图标按钮');
+                            break;
+                    }
+                });
+            })
+        </script>
+    </body>
+</html>

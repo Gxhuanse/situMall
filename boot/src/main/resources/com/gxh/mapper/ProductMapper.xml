@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxh.mapper.ProductMapper">
+
+    <select id="selectProductByPageCondition" resultMap="ProductCategoryName">
+        select c.ct_name as cateName,p.*
+        from situ_prj_02_boot.tb_product p
+        left outer join situ_prj_02_boot.tb_category c
+        on p.category_id = c.id
+        <where>
+            <if test="true">and p.deleted=0</if>
+            <if test="true">and c.deleted=0</if>
+            <if test="productName!=null and productName!=''">
+                and p.product_name like concat('%',#{productName},'%')
+            </if>
+        </where>
+    </select>
+
+    <resultMap id="product" type="com.gxh.entity.Product">
+        <id column="id" property="id"/>
+    </resultMap>
+    <resultMap id="ProductCategoryName" type="com.gxh.entity.dto.product.ProductSelectPageConditionOutDTO" extends="product">
+        <id column="id" property="id"/>
+        <result column="cateName" property="productCatName"/>
+    </resultMap>
+
+</mapper>

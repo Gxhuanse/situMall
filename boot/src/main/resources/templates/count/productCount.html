@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/layui.css}">
+        <script type="text/javascript" th:src="@{/js/layui.js}"></script>
+        <script type="text/javascript" th:src="@{/js/echarts.js}"></script>
+    </head>
+    <body>
+        <div id="main" style="width: 600px;height:400px;"></div>
+    </body>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+        // 指定图表的配置项和数据
+        $=layui.$;
+        var option = {
+            title: {
+                text: '商品分类统计'
+            },
+            tooltip: {},
+            legend: {
+                data: ['数量']
+            },
+            xAxis: {
+                data: []
+            },
+            yAxis: {},
+            series: [
+                {
+                    name: '数量',
+                    type: 'bar',
+                    data: []
+                }
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        $.ajax({
+            url:'/BootStart/Category/getCountData',
+            type:'get',
+            dataType:'json',
+            success:function (result){
+                //图标数据填充
+                myChart.setOption({
+                    xAxis: {
+                        data: result.res.categories
+                    },
+                    series: [
+                        {
+                            // 根据名字对应到相应的系列
+                            name: '数量',
+                            data: result.res.data
+                        }
+                    ]
+                });
+            },
+            error:function (result){
+                layer.msg(result.msg);
+            }
+        })
+    </script>
+</html>
