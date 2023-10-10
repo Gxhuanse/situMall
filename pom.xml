@@ -15,6 +15,7 @@
     <module>common</module>
     <module>boot</module>
     <module>frontPage</module>
+    <module>frontModel</module>
   </modules>
 
   <properties>
@@ -66,6 +67,7 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>2.1.0.RELEASE</version>
         <configuration>
           <excludes>
             <exclude>
