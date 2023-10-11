@@ -53,7 +53,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         queryWrapper.eq(Product::getStatus,1)
                 .eq(pt.getId()!=null,Product::getId,pt.getId())
                 .eq(pt.getCategoryId()!=null,Product::getCategoryId,pt.getCategoryId())
-                .eq(pt.getRecom()!=null,Product::getRecom,pt.getRecom());
+                .eq(pt.getRecom()!=null,Product::getRecom,pt.getRecom())
+                .like(pt.getProductName()!=null,Product::getProductName,pt.getProductName());
 
         List<Product> productList = productMapper.selectList(queryWrapper);
         if (productList!=null&& !productList.isEmpty()){

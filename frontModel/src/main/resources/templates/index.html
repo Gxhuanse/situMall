@@ -18,8 +18,8 @@
 							<a href="#" id="reg">注册</a>
 						</p>
 						<form action="#" method="get" class="fl">
-							<input type="text" placeholder="热门搜索：干花花瓶" />
-							<input type="button" />
+							<input type="text" id="key" placeholder="搜索" />
+							<input type="button" id="btn-search" />
 						</form>
 						<div class="btn fl clearfix">
 							<a href="mygxin.html"><img th:src="@{/img/grzx.png}"/></a>
@@ -337,6 +337,12 @@
 						}
 					})
 				}
+
+				$('#btn-search').click(function () {
+					var key=$('#key').val();
+
+					window.location.href='/search?key'+key;
+				})
 			});
 		</script>
 	</body>

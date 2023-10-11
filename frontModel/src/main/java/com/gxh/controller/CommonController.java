@@ -18,4 +18,9 @@ public class CommonController {
         return "/proList";
     }
 
+    @GetMapping("/search")
+    public String search(){
+        return "/search";
+    }
+
 }
