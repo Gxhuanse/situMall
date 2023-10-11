@@ -1,6 +1,6 @@
 $(function(){
 //	nav
-	$(".head ul>li").hover(function(){
+	$("body").on('mouseenter','.head ul>li',function(){
 		var aa=$(this).children().length;
 		if(aa!=1){
 			$(this).children("div").stop().slideToggle(200).end().siblings().children("div").hide();
@@ -8,6 +8,22 @@ $(function(){
 			$(this).children("div").hide();
 		}
 	});
+	$("body").on('mouseleave','.head ul>li',function(){
+		var aa=$(this).children().length;
+		if(aa!=1){
+			$(this).children("div").stop().slideToggle(200).end().siblings().children("div").hide();
+		}else{
+			$(this).children("div").hide();
+		}
+	});
+// 	$(".head ul>li").hover(function(){
+// 		var aa=$(this).children().length;
+// 		if(aa!=1){
+// 			$(this).children("div").stop().slideToggle(200).end().siblings().children("div").hide();
+// 		}else{
+// 			$(this).children("div").hide();
+// 		}
+// 	});
 	$("a.er1").mouseover(function(){
 		$(this).siblings("p").slideDown(100);
 	}).mouseout(function(){

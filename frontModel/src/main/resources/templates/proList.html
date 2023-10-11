@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 	<head lang="en">
 		<meta charset="utf-8" />
-		<title>干花花艺</title>
+		<title>二级分类</title>
 		<link rel="stylesheet" type="text/css" href="css/public.css"/>
 		<link rel="stylesheet" type="text/css" href="css/proList.css"/>
 	</head>
@@ -30,86 +30,28 @@
 					</div>
 				</div>
 				<ul class="clearfix" id="bott">
-					<li><a href="index.html">首页</a></li>
-					<li>
-						<a href="#">所有商品</a>
-						<div class="sList">
-							<div class="wrapper  clearfix">
-								<a href="paint.html">
-									<dl>
-										<dt><img src="img/nav1.jpg"/></dt>
-										<dd>浓情欧式</dd>
-									</dl>
-								</a>
-								<a href="paint.html">
-									<dl>
-										<dt><img src="img/nav2.jpg"/></dt>
-										<dd>浪漫美式</dd>
-									</dl>
-								</a>
-								<a href="paint.html">
-									<dl>
-										<dt><img src="img/nav3.jpg"/></dt>
-										<dd>雅致中式</dd>
-									</dl>
-								</a>
-								<a href="paint.html">
-									<dl>
-										<dt><img src="img/nav6.jpg"/></dt>
-										<dd>简约现代</dd>
-									</dl>
-								</a>
-								<a href="paint.html">
-									<dl>
-										<dt><img src="img/nav7.jpg"/></dt>
-										<dd>创意装饰</dd>
-									</dl>
-								</a>
-							</div>
-						</div>
-					</li>
-					<li>
-						<a href="flowerDer.html">装饰摆件</a>
-						<div class="sList2">
-							<div class="clearfix">
-								<a href="proList.html">干花花艺</a>
-								<a href="vase_proList.html">花瓶花器</a>
-							</div>
-						</div>
-					</li>
-					<li>
-						<a href="decoration.html">布艺软饰</a>
-						<div class="sList2">
-							<div class="clearfix">
-								<a href="zbproList.html">桌布罩件</a>
-								<a href="bzproList.html">抱枕靠垫</a>
-							</div>
-						</div>
-					</li>
-					<li><a href="paint.html">墙式壁挂</a></li>
-					<li><a href="perfume.html">蜡艺香薰</a></li>
-					<li><a href="idea.html">创意家居</a></li>
+					<li><a href="index.html" th:href="@{/index}">首页</a></li>
 				</ul>
 			</div>
 		</div>
 		<!------------------------------banner------------------------------>
 		<div class="banner">
-			<a href="#"><img src="img/temp/banner1.jpg"/></a>
+<!--			<a href="#"><img src="img/temp/banner1.jpg"/></a>-->
 		</div>
 		<!-----------------address------------------------------->
 		<div class="address">
-			<div class="wrapper clearfix">
-				<a href="index.html">首页</a>
-				<span>/</span>
-				<a href="flowerDer.html">装饰摆件</a>
-				<span>/</span>
-				<a href="proList.html" class="on">干花花艺</a>
-			</div>
+<!--			<div class="wrapper clearfix">-->
+<!--				<a href="index.html" th:href="@{/index}">首页</a>-->
+<!--				<span>/</span>-->
+<!--				<a href="flowerDer.html">装饰摆件</a>-->
+<!--				<span>/</span>-->
+<!--				<a href="proList.html" class="on">干花花艺</a>-->
+<!--			</div>-->
 		</div>
 		<!-------------------current---------------------->
 		<div class="current">
 			<div class="wrapper clearfix">
-				<h3 class="fl">干花花艺</h3> 
+				<h3 class="fl" id="fl-n">商品:</h3>
 				<div class="fr choice">
 					<p class="default">排序方式</p>
 					<ul class="select">
@@ -123,151 +65,16 @@
 			</div>
 		</div>
 		<!----------------proList------------------------->
-		<ul class="proList wrapper clearfix">
-			<li>
-				<a href="proDetail.html">
-					<dl>
-						<dt><img src="img/temp/pro01.jpg"></dt>
-						<dd>【最家】跳舞兰仿真花干花</dd>
-						<dd>￥17.90</dd>
-					</dl>
-				</a>
-			</li>
-			<li>
-				<a href="proDetail.html">
-					<dl>
-						<dt><img src="img/temp/pro02.jpg"></dt>
-						<dd>【最家】跳舞兰仿真花干花</dd>
-						<dd>￥17.90</dd>
-					</dl>
-				</a>
-			</li>
-			<li>
-				<a href="proDetail.html">
-					<dl>
-						<dt><img src="img/temp/pro03.jpg"></dt>
-						<dd>【最家】跳舞兰仿真花干花</dd>
-						<dd>￥17.90</dd>
-					</dl>
-				</a>
-			</li>
-			<li>
-				<a href="proDetail.html">
-					<dl>
-						<dt><img src="img/temp/pro04.jpg"></dt>
-						<dd>【最家】跳舞兰仿真花干花</dd>
-						<dd>￥17.90</dd>
-					</dl>
-				</a>
-			</li>
-			<li>
-				<a href="proDetail.html">
-					<dl>
-						<dt><img src="img/temp/pro05.jpg"></dt>
-						<dd>【最家】跳舞兰仿真花干花</dd>
-						<dd>￥17.90</dd>
-					</dl>
-				</a>
-			</li>
-			<li>
-				<a href="proDetail.html">
-					<dl>
-						<dt><img src="img/temp/pro06.jpg"></dt>
-						<dd>【最家】跳舞兰仿真花干花</dd>
-						<dd>￥17.90</dd>
-					</dl>
-				</a>
-			</li>
-			<li>
-				<a href="proDetail.html">
-					<dl>
-						<dt><img src="img/temp/pro07.jpg"></dt>
-						<dd>【最家】跳舞兰仿真花干花</dd>
-						<dd>￥17.90</dd>
-					</dl>
-				</a>
-			</li>
-			<li>
-				<a href="proDetail.html">
-					<dl>
-						<dt><img src="img/temp/pro08.jpg"></dt>
-						<dd>【最家】跳舞兰仿真花干花</dd>
-						<dd>￥17.90</dd>
-					</dl>
-				</a>
-			</li>
-			<li>
-				<a href="proDetail.html">
-					<dl>
-						<dt><img src="img/temp/pro01.jpg"></dt>
-						<dd>【最家】跳舞兰仿真花干花</dd>
-						<dd>￥17.90</dd>
-					</dl>
-				</a>
-			</li>
-			<li>
-				<a href="proDetail.html">
-					<dl>
-						<dt><img src="img/temp/pro02.jpg"></dt>
-						<dd>【最家】跳舞兰仿真花干花</dd>
-						<dd>￥17.90</dd>
-					</dl>
-				</a>
-			</li>
-			<li>
-				<a href="proDetail.html">
-					<dl>
-						<dt><img src="img/temp/pro03.jpg"></dt>
-						<dd>【最家】跳舞兰仿真花干花</dd>
-						<dd>￥17.90</dd>
-					</dl>
-				</a>
-			</li>
-			<li>
-				<a href="proDetail.html">
-					<dl>
-						<dt><img src="img/temp/pro04.jpg"></dt>
-						<dd>【最家】跳舞兰仿真花干花</dd>
-						<dd>￥17.90</dd>
-					</dl>
-				</a>
-			</li>
-			<li>
-				<a href="proDetail.html">
-					<dl>
-						<dt><img src="img/temp/pro05.jpg"></dt>
-						<dd>【最家】跳舞兰仿真花干花</dd>
-						<dd>￥17.90</dd>
-					</dl>
-				</a>
-			</li>
-			<li>
-				<a href="proDetail.html">
-					<dl>
-						<dt><img src="img/temp/pro06.jpg"></dt>
-						<dd>【最家】跳舞兰仿真花干花</dd>
-						<dd>￥17.90</dd>
-					</dl>
-				</a>
-			</li>
-			<li>
-				<a href="proDetail.html">
-					<dl>
-						<dt><img src="img/temp/pro07.jpg"></dt>
-						<dd>【最家】跳舞兰仿真花干花</dd>
-						<dd>￥17.90</dd>
-					</dl>
-				</a>
-			</li>
-			<li>
-				<a href="proDetail.html">
-					<dl>
-						<dt><img src="img/temp/pro08.jpg"></dt>
-						<dd>【最家】跳舞兰仿真花干花</dd>
-						<dd>￥17.90</dd>
-					</dl>
-				</a>
-			</li>
+		<ul class="proList wrapper clearfix" id="proList">
+<!--			<li>-->
+<!--				<a href="proDetail.html">-->
+<!--					<dl>-->
+<!--						<dt><img src="img/temp/pro01.jpg"></dt>-->
+<!--						<dd>【最家】跳舞兰仿真花干花</dd>-->
+<!--						<dd>￥17.90</dd>-->
+<!--					</dl>-->
+<!--				</a>-->
+<!--			</li>-->
 		</ul>
 		<!----------------mask------------------->
 		<div class="mask"></div>
@@ -373,5 +180,120 @@
 		<script src="js/nav.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/pro.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/cart.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			$(function (){
+				//获取分类信息
+				$.ajax({
+					url:'/api/category',
+					dataType:'json',
+					success(result){
+						console.log("/api/category  请求成功")
+						if (result.code==200){
+							console.log("/api/category  处理成功");
+							var first=[];
+							var second=[];
+							$.each(result.res,function (index,item){
+								if (item.parentId==0){
+									first.push(item);
+								}else {
+									second.push(item);
+								}
+							});
+							var html='';
+
+							//一级分类
+							$.each(first,function (index,item){
+								var id=item.id;
+								var name=item.ctName;
+								html+='<li>';
+								html+='<a href="#">'+item.ctName+'</a>';
+								// 遍历二级分类
+								html+='<div className="sList2">'
+								html+='<div className="clearfix">'
+								$.each(second,function (index,item){
+									if (item.parentId == id){
+										html+='<a href="/proList?id='+item.id+'&name='+name+'">'+item.ctName+'&nbsp;&nbsp;</a>';
+									}
+								});
+								html+='</div></div>'
+								html+='</li>'
+							});
+							$('#bott').append(html);
+
+						}else {
+							console.log(result.msg)
+						}
+					},
+					error(result){
+						console.log("/api/category  请求失败")
+					}
+				});
+
+				//获取二级分类信息
+				var id='[[${param.id}]]';
+				var name='[[${param.name}]]';
+				$.ajax({
+					url: '/api/category/'+id,
+					dataType: 'json',
+					success(result) {
+						if (result.code ===200){
+							// $('.banner').append('<a href="#"><img src="/img/upload/'+result.res.pic+'"/></a>');
+							$('.address').append('<div class="wrapper clearfix">\n' +
+									'\t<a href="index.html" th:href="@{/index}">首页</a>\n' +
+									'\t<span>/</span>\n' +
+									'\t<a href="#">'+name+'</a>\n' +
+									'\t<span>/</span>\n' +
+									'\t<a href="proList.html" class="on">'+result.res.ctName+'</a>\n' +
+									'</div>');
+
+							$('#fl-n').append(result.res.ctName)
+
+						}else {
+							console.log("请求成功，处理失败 ")
+						}
+					},
+					error(result){
+						console.log("/api/category  请求失败")
+					}
+				})
+
+				//获取分类下商品
+				getRecomProduct(id);
+				function getRecomProduct(id){
+					$.ajax({
+						url:'/api/product',
+						data:{
+							categoryId:id
+						},
+						dataType:'json',
+						success(result){
+							if (result.code==200){
+								var html='';
+								$.each(result.res,function (index,item){
+									var pics =item.pics;
+									var pic='';
+									if (pics!=null && pics.length>0){
+										pic=pics[0]
+									}
+									html='<li>\n' +
+											'\t\t\t\t<a href="proDetail.html">\n' +
+											'\t\t\t\t\t<dl>\n' +
+											'\t\t\t\t\t\t<dt><img src="/img/upload/'+pic+'"></dt>\n' +
+											'\t\t\t\t\t\t<dd>'+item.productName+'</dd>\n' +
+											'\t\t\t\t\t\t<dd>￥'+item.markPrice+'</dd>\n' +
+											'\t\t\t\t\t</dl>\n' +
+											'\t\t\t\t</a>\n' +
+											'\t\t\t</li>';
+								});
+								$('#proList').append(html);
+							}
+						},
+						error(result){
+							console.log("/api/category  请求失败")
+						}
+					})
+				}
+			})
+		</script>
 	</body>
 </html>

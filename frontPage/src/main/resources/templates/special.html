@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 	<head>
 		<meta name="renderer" content="webkit|ie-comp|ie-stand">
@@ -14,12 +14,12 @@
 		<meta name="format-detection" content="telephone=no">
 		<meta name="keywords" content="">
 		<meta name="description" content="">
-		<link rel="stylesheet" type="text/css" href="css/page.css" />
-		<link rel="stylesheet" type="text/css" href="css/base.css" />
-		<link rel="stylesheet" type="text/css" href="css/common.css" />
-		<script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
-		<script type="text/javascript" src="js/jquery.SuperSlide.2.1.js"></script>
-		<script src="js/common.js"></script>
+		<link rel="stylesheet" type="text/css" th:href="@{/css/page.css}" />
+		<link rel="stylesheet" type="text/css" th:href="@{/css/base.css}" />
+		<link rel="stylesheet" type="text/css" th:href="@{/css/common.css}" />
+		<script th:src="@{/js/jquery-1.8.3.min.js}" type="text/javascript"></script>
+		<script type="text/javascript" th:src="@{/js/jquery.SuperSlide.2.1.js}"></script>
+		<script th:src="@{/js/common.js}"></script>
 	</head>
 
 	<body>
@@ -28,7 +28,7 @@
 			<div class="top clearfix">
 				<div class="topctent clearfix">
 					<div class="left clearfix fl">
-						公告：您好，欢迎登录北京椿龄文化发展有限公司
+						公告：您好，欢迎登录北京椿2211龄文化发展有限公司
 					</div>
 					<div class="right clearfix fr">
 						<div class="zuo clearfix fl">
@@ -58,15 +58,9 @@
 						<div class="fenxiang clearfix fl">
 							<span class="fl">分享到：</span>
 							<ul class="clearfix fl">
-								<li>
-									<a href="#"><img src="img/sina.png" /></a>
-								</li>
-								<li>
-									<a href="#"><img src="img/qq.png" /></a>
-								</li>
-								<li>
-									<a href="#"><img src="img/wechat.png" /></a>
-								</li>
+								<li><a href="#"><img th:src="@{/img/sina.png}"/></a></li>
+								<li><a href="#"><img th:src="@{/img/qq.png}"/></a></li>
+								<li><a href="#"><img th:src="@{/img/wechat.png}"/></a></li>
 							</ul>
 						</div>
 					</div>
@@ -77,8 +71,8 @@
 					<a href="index.html"></a>
 				</div>
 				<div class="search clearfix fr ra5">
-					<input type="text" class="fl" name="" id="" value="" placeholder="请输入您要搜索的内容" />
-					<input type="button" name="" id="" value="搜索" class="fl box-s" />
+					<input type="text" class="fl" name="" id="asd" value="" placeholder="请输入您要搜索的内容" />
+					<input type="button" name="" id="asx" value="搜索" class="fl box-s" />
 				</div>
 			</div>
 		</div>
@@ -88,18 +82,10 @@
 		<div class="navbar clearfix">
 			<div class="content clearfix">
 				<ul>
-					<li>
-						<a href="index.html">首页</a>
-					</li>
-					<li class="cur">
-						<a href="special.html">专场</a>
-					</li>
-					<li>
-						<a href="mall.html">商城</a>
-					</li>
-					<li>
-						<a href="artist.html">艺术家</a>
-					</li>
+					<li class="cur"><a th:href="@{/Common/index}">首页</a></li>
+					<li><a th:href="@{/Common/special}">专场</a></li>
+					<li><a th:href="@{/Common/mall}">商城</a></li>
+					<li><a href="artist.html">艺术家</a></li>
 				</ul>
 			</div>
 		</div>
@@ -109,7 +95,7 @@
 		<div class="banner">		
 			<div class="bd">
 				<ul>
-					<li style="background:url(img/banner.jpg) #194982 center 0 no-repeat;"><a target="_blank" href="#"></a></li>
+					<li style="background:url(/img/banner.jpg) #194982 center 0 no-repeat;"><a target="_blank" href="#"></a></li>
 				</ul>
 			</div>
 		</div>
@@ -408,9 +394,9 @@
 					<span>...</span>
 					<a href="#" class="next box-s">下一页</a>
 					<span class="ml10">到第</span>
-					<input type="" name="" id="" value="">
+					<input type="" name="" id="asad" value="">
 					<span>页</span>
-					<input type="submit" name="" id="" value="确定">
+					<input type="submit" name="" id="aaa" value="确定">
 				</div>
 			</div>
 		</div>

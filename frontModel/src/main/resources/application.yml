@@ -53,7 +53,7 @@ mybatis-plus:
       logic-not-delete-value: 0
 upload:
 #  path: D:\PORJECT\Prj_IDEA\SiTuPrj_02_Boot\src\main\resources\static\img\upload\
-  path: D:\PORJECT\Prj_IDEA\situ_Prj_Parent\frontPage\src\main\resources\static\img\upload\
+  path: D:\PORJECT\Prj_IDEA\situ_Prj_Parent\boot\src\main\resources\static\img\upload\
 
 #PageHelper配置
 pagehelper:

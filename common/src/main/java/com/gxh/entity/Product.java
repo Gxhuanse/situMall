@@ -1,11 +1,12 @@
 package com.gxh.entity;
 
 import java.math.BigDecimal;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
+
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
+import java.util.List;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -82,6 +83,8 @@ public class Product implements Serializable {
      */
     private Integer status;
 
+    @TableField(exist = false)
+    private List<String> pics;
     /**
      * 是否删除 0：未删除  1：已删除
      */

@@ -38,7 +38,7 @@ public class Category implements Serializable {
      * 分类描述
      */
     private String ctDiscrip;
-
+    private String ctImg;
     /**
      * 父级分类
      */
