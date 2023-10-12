@@ -28,7 +28,7 @@
 <body>
     <form class="layui-form fm">
         <div class="demo-login-container cont">
-            <h1>信息管理系后台统登录</h1>
+            <h1>商城前台登录</h1>
             <br>
             <div class="layui-form-item">
             <div class="layui-input-wrap">
@@ -58,7 +58,7 @@
                 </div>
                 <div class="layui-col-xs5">
                     <div style="margin-left: 10px;">
-                        <img src="http://localhost:8080/BootStart/Check/CaptchaImg/first" onclick="this.src='http://localhost:8080/BootStart/Check/CaptchaImg/'+ new Date().getTime();">
+                        <img src="http://localhost:8082/Check/CaptchaImg/first" onclick="this.src='http://localhost:8082/Check/CaptchaImg/'+ new Date().getTime();">
                     </div>
                 </div>
             </div>
@@ -105,14 +105,14 @@
             $(".layui-btn").attr('disabled','disabled');
             // 此处可执行 Ajax 等操作
             $.ajax({
-                url:'/BootStart/User/login',
+                url:'/User/login',
                 data:field,
                 type:'post',
                 dataType:'json',
                 success:function (result){
                     if (result.code===200){
                         layer.msg("登录成功");
-                        window.location.href="http://localhost:8080/BootStart/Common/AdmNavHome";
+                        window.location.href="http://localhost:8082/index";
                     }else {
                         layer.msg(result.msg);
                     }

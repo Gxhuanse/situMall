@@ -14,7 +14,7 @@
 					<h1 class="fl"><a th:href="@{index.html}"><img th:src="@{/img/logo.png}"/></a></h1>
 					<div class="fr clearfix" id="top1">
 						<p class="fl">
-							<a href="#" id="login">登录</a>
+							<a href="/login" id="login">登录</a>
 							<a href="#" id="reg">注册</a>
 						</p>
 						<form action="#" method="get" class="fl">
@@ -314,7 +314,7 @@
 										html+='<div class="pList clearfix tran">\n';
 									}
 									html+='' +
-											'\t\t\t\t\t<a href="proDetail.html">\n' +
+											'\t\t\t\t\t<a href="/proDetail?id="'+item.id+'>\n' +
 											'\t\t\t\t\t\t<dl>\n' +
 											'\t\t\t\t\t\t\t<dt>\n' +
 											'\t\t\t\t\t\t\t\t<span class="abl"></span>\n' +

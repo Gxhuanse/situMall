@@ -23,4 +23,14 @@ public class CommonController {
         return "/search";
     }
 
+    @GetMapping("/proDetail")
+    public String proDetail(){
+        return "/proDetail";
+    }
+
+    @GetMapping("/login")
+    public String AdmUserLogin(){
+        return "/AdmUserLogin";
+    }
+
 }
