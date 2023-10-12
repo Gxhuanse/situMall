@@ -1,0 +1,11 @@
+1、开发工具：idea或eclipse
+2、开发环境：mysql5/8+jdk8
+3、idea或eclipse中导入源码
+4、修改数据库配置：src\main\resources\application.properties
+改成自己数据库用户名密码还有数据库名称
+5、导入数据库脚本
+6、将图片文件（upload.zip）解压到：D:\upload下
+7、运行即可
+8、商城首页：http://127.0.0.1:8080
+9、商城后台：http://127.0.0.1:8080/admin/login
+10、前台用户账户：13700002703  密码：123456  后台账户：admin 密码：123456
