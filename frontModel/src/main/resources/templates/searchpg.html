@@ -5,6 +5,34 @@
 		<title>搜索</title>
 		<link rel="stylesheet" type="text/css" href="css/public.css"/>
 		<link rel="stylesheet" type="text/css" href="css/proList.css"/>
+		<style>
+			.fenye{
+				margin: 45px auto;
+				height: 24px;
+				line-height: 24px;
+				display: flex;
+				justify-content: center;
+			}
+			.fenye .unnumber{
+				margin-top: 6px;
+			}
+			.fenye .numbers {
+				display: inline-block;
+				width: 48px;
+				height: 24px;
+				padding: 3px 0;
+				margin: 0 5px;
+				font-size: 18px;
+				font-weight: 200;
+				line-height: 24px;
+				text-align: center;
+				color: #b0b0b0;
+			}
+			.fenye .current {
+				background-color: #757575;
+				color: #fff;
+			}
+		</style>
 	</head>
 	<body>
 		<!------------------------------head------------------------------>
@@ -107,18 +135,20 @@
 			</div>
 		</div>
 		<!----------------proList------------------------->
+		<div id="my-goods-list">
 		<ul class="proList wrapper clearfix" id="proList">
-			<li>
-				<a href="proDetail.html">
-					<dl>
-						<dt><img src="img/temp/pro01.jpg"></dt>
-						<dd>【最家】跳舞兰仿真花干花</dd>
-						<dd>￥17.90</dd>
-					</dl>
-				</a>
-			</li>
+<!--			<li>-->
+<!--				<a href="proDetail.html">-->
+<!--					<dl>-->
+<!--						<dt><img src="img/temp/pro01.jpg"></dt>-->
+<!--						<dd>【最家】跳舞兰仿真花干花</dd>-->
+<!--						<dd>￥17.90</dd>-->
+<!--					</dl>-->
+<!--				</a>-->
+<!--			</li>-->
 
 		</ul>
+		</div>
 		<!----------------mask------------------->
 		<div class="mask"></div>
 		<!-------------------mask内容------------------->
@@ -227,16 +257,20 @@
 			$(function (){
 				var key='[[${param.key}]]';
 				//获取搜索的商品
-				getRecomProduct(key);
-				function getRecomProduct(key){
+				getRecomProduct(key,1);
+				function getRecomProduct(key,page){
 					$.ajax({
-						url:'/api/product',
+						url:'/api/product/listPage',
 						data:{
-							productName:key
+							productName:key,
+							page:page,
+							limit:2
 						},
 						dataType:'json',
 						success(result){
+							$('#proList').empty();
 							if (result.code==200){
+								var pageInfo = result.res;
 								var html='';
 								$.each(result.res,function (index,item){
 									var pics =item.pics;
@@ -255,6 +289,7 @@
 											'\t\t\t</li>';
 								});
 								$('#proList').append(html);
+								showPage(pageInfo);
 							}
 						},
 						error(result){
@@ -262,6 +297,40 @@
 						}
 					})
 				}
+
+
+				//显示分页
+				function showPage(pageInfo) {
+					//删除子元素
+					$('#my-goods-list').find('.fenye').remove();
+					var current = pageInfo.current;//当前页
+					var pages = pageInfo.pages;//总页数
+					//上一页
+					var pre = current-1>0? current-1:1;
+					//下一页
+					var next = current+1>pages? pages:current+1;
+
+					var html = '<div class="fenye wrapper clearfix">\n' +
+							'\t\t\t\t\t\t<a href="javascript:;" data-page="'+pre+'"><img src="img/zuo.jpg" class="unnumber"/></a>\n';
+					for(var i=1;i<=pages;i++){
+						if(i === current){
+							html += '\t\t\t\t\t\t<a href="javascript:;" class="numbers current" data-page="'+i+'">'+i+'</a>\n';
+						}else{
+							html += '\t\t\t\t\t\t<a href="javascript:;"  class="numbers" data-page="'+i+'">'+i+'</a>\n';
+						}
+					}
+					html += '\t\t\t\t\t\t<a href="javascript:;" data-page="'+next+'"><img src="img/you.jpg" class="unnumber" /></a>\n' +
+							'\t\t\t\t\t</div>';
+
+					$('#my-goods-list').append(html);
+					// 添加页码的点击事件
+					$('.fenye').on('click', 'a', function (){
+						// 刷新数据
+						var page = $(this).attr('data-page');
+						getRecomProduct(key,page);
+					});
+				}
+
 			})
 
 		</script>

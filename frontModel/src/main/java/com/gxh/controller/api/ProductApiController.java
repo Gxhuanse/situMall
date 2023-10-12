@@ -1,5 +1,6 @@
 package com.gxh.controller.api;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.gxh.common.ResponseBean;
 import com.gxh.entity.Category;
 import com.gxh.entity.Product;
@@ -25,6 +26,20 @@ public class ProductApiController {
         try {
 //            List<Product> productList= productService.selectByID(id);
             List<Product> productList= productService.search(product);
+            responseBean=ResponseBean.ok(productList);
+        } catch (Exception e) {
+            responseBean=ResponseBean.failed("查询失败err");
+            throw new RuntimeException(e);
+        }
+        return responseBean;
+    }
+
+    @GetMapping("/listPage")
+    public ResponseBean listPage(Integer page,Integer limit,Product product){
+        ResponseBean responseBean=null;
+        try {
+//            List<Product> productList= productService.selectByID(id);
+            IPage<Product> productList= productService.listPage(page,limit,product);
             responseBean=ResponseBean.ok(productList);
         } catch (Exception e) {
             responseBean=ResponseBean.failed("查询失败err");

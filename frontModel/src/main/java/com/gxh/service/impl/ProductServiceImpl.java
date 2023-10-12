@@ -2,6 +2,8 @@ package com.gxh.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gxh.entity.Category;
 import com.gxh.entity.Product;
@@ -72,5 +74,41 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             }
         }
         return productList;
+    }
+
+    @Override
+    public IPage<Product> listPage(Integer page, Integer limit, Product pt) {
+        //参数验证
+        if(page == null){
+            page = 1;
+        }
+        if(limit == null){
+            limit = 16;
+        }
+
+        LambdaQueryWrapper<Product>  queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(Product::getStatus,1)
+                .eq(pt.getId()!=null,Product::getId,pt.getId())
+                .eq(pt.getCategoryId()!=null,Product::getCategoryId,pt.getCategoryId())
+                .eq(pt.getRecom()!=null,Product::getRecom,pt.getRecom())
+                .like(pt.getProductName()!=null,Product::getProductName,pt.getProductName());
+
+        IPage<Product> productIPage=new Page<>(page,limit);
+        IPage<Product> productList = productMapper.selectPage(productIPage, queryWrapper);
+        if (productList!=null&& !productList.getRecords().isEmpty()){
+            for (Product product : productList.getRecords()) {
+                QueryWrapper<ProductPic> queryWrapper1=new QueryWrapper<>();
+                queryWrapper1.lambda().eq(ProductPic::getProductId,product.getId());
+                List<ProductPic> list = picMapper.selectList(queryWrapper1);
+                if (list!=null&&!list.isEmpty()){
+                    List<String>  pics=new ArrayList<>();
+                    for (ProductPic productPic : list) {
+                        pics.add(productPic.getUrl());
+                    }
+                    product.setPics(pics);
+                }
+            }
+        }
+        return productIPage;
     }
 }
