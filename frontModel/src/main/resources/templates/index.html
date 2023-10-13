@@ -13,9 +13,15 @@
 				<div class="clearfix" id="top">
 					<h1 class="fl"><a th:href="@{index.html}"><img th:src="@{/img/logo.png}"/></a></h1>
 					<div class="fr clearfix" id="top1">
-						<p class="fl">
+						<p class="fl" th:if="${session.user==null}">
 							<a href="/login" id="login">登录</a>
 							<a href="#" id="reg">注册</a>
+						</p>
+						<p class="fl" th:if="${session.user!=null}">
+							欢迎
+							<a href="#" id="us" th:text="${session.user.userNickname}"></a>
+							<a href="#" id="out" th:href="@{/logout}">退出</a>
+
 						</p>
 						<form action="#" method="get" class="fl">
 							<input type="text" id="key" placeholder="搜索" />
@@ -314,7 +320,7 @@
 										html+='<div class="pList clearfix tran">\n';
 									}
 									html+='' +
-											'\t\t\t\t\t<a href="/proDetail?id="'+item.id+'>\n' +
+											'\t\t\t\t\t<a href="/proDetail?id='+item.id+'">\n' +
 											'\t\t\t\t\t\t<dl>\n' +
 											'\t\t\t\t\t\t\t<dt>\n' +
 											'\t\t\t\t\t\t\t\t<span class="abl"></span>\n' +

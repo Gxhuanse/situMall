@@ -94,56 +94,21 @@
 		</div>
 		<!-----------------address------------------------------->
 		<div class="address">
-			<div class="wrapper clearfix">
-				<a href="index.html">首页</a>
-				<span>/</span>
-				<a href="flowerDer.html">装饰摆件</a>
-				<span>/</span>
-				<a href="proList.html">干花花艺</a>
-				<span>/</span>
-				<a href="#" class="on">【最家】非洲菊仿真花干花</a>
-			</div>
+<!--			<div class="wrapper clearfix">-->
+<!--				<a href="index.html">首页</a>-->
+<!--				<span>/</span>-->
+<!--				<a href="flowerDer.html">装饰摆件</a>-->
+<!--				<span>/</span>-->
+<!--				<a href="proList.html">干花花艺</a>-->
+<!--				<span>/</span>-->
+<!--				<a href="#" class="on">【最家】非洲菊仿真花干花</a>-->
+<!--			</div>-->
 		</div>
 		<!-----------------------Detail------------------------------>
 		<div class="detCon">
 			<div class="proDet wrapper">
-				<div class="proCon clearfix">
-					<div class="proImg fl">
-						<img class="det" src="img/temp/proDet.jpg" />
-						<div class="smallImg clearfix">
-							<img src="img/temp/proDet01.jpg" data-src="img/temp/proDet01_big.jpg">
-							<img src="img/temp/proDet02.jpg" data-src="img/temp/proDet02_big.jpg">
-							<img src="img/temp/proDet03.jpg" data-src="img/temp/proDet03_big.jpg">
-							<img src="img/temp/proDet04.jpg" data-src="img/temp/proDet04_big.jpg">
-						</div>
-					</div>
-					<div class="fr intro">
-						<div class="title">
-							<h4>【最家】非洲菊仿真花干花</h4>
-							<p>【破损补寄】【适合放室内、卧室、书房、餐桌、办公室、客厅、电视柜等地方】【无理由退换货】【包邮】【白色现代简约花瓶】</p>
-							<span>￥59.90</span>
-						</div>
-						<div class="proIntro">
-							<p>颜色分类</p>
-							<div class="smallImg clearfix categ">
-								<p class="fl"><img src="img/temp/prosmall01.jpg" alt="白瓷花瓶+20支快乐花" data-src="img/temp/proBig01.jpg"></p>
-								<p class="fl"><img src="img/temp/prosmall02.jpg" alt="白瓷花瓶+20支兔尾巴草" data-src="img/temp/proBig02.jpg"></p>
-								<p class="fl"><img src="img/temp/prosmall03.jpg" alt="20支快乐花" data-src="img/temp/proBig03.jpg"></p>
-								<p class="fl"><img src="img/temp/prosmall04.jpg" alt="20支兔尾巴草" data-src="img/temp/proBig04.jpg"></p>
-							</div>
-							<p>数量&nbsp;&nbsp;库存<span>2096</span>件</p>
-							<div class="num clearfix">
-								<img class="fl sub" src="img/temp/sub.jpg">
-								<span class="fl" contentEditable="true">1</span>
-								<img class="fl add" src="img/temp/add.jpg">
-								<p class="please fl">请选择商品属性!</p>
-							</div>
-						</div>
-						<div class="btns clearfix">
-							<a href="#2"><p class="buy fl">立即购买</p></a>
-							<a href="#2"><p class="cart fr">加入购物车</p></a>
-						</div>
-					</div>
+				<div class="proCon clearfix" id="my-goods-detials">
+
 				</div>
 			</div>
 		</div>
@@ -463,10 +428,99 @@
 		<script src="js/jquery.SuperSlide.2.1.1.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/public.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/nav.js" type="text/javascript" charset="utf-8"></script>
-		<script src="js/pro.js" type="text/javascript" charset="utf-8"></script>
+
 		<script src="js/cart.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			jQuery(".bottom").slide({titCell:".hd ul",mainCell:".bd .likeList",autoPage:true,autoPlay:false,effect:"leftLoop",autoPlay:true,vis:1});
+			$(function () {
+				var id='[[${param.id}]]';
+				$.ajax({
+					url:'/api/product/'+id,
+					// data:{
+					// 	categoryId:id
+					// },
+					dataType:'json',
+					async:false,//修改异步请求为同步
+					success(result){
+						if (result.code===200){
+							var pics=result.res[0].pics;
+							var html='<div class="proImg fl">\n' +
+									'\t\t\t\t\t\t<img class="det" src="img/temp/proDet.jpg" />\n' +
+									'\t\t\t\t\t\t<div class="smallImg clearfix">\n' +
+									'\t\t\t\t\t\t\t<img src="/img/upload/'+pics[0]+'" data-src="img/temp/proDet01_big.jpg">\n' +
+									'\t\t\t\t\t\t\t<img src="/img/upload/'+pics[1]+'" data-src="img/temp/proDet02_big.jpg">\n' +
+									'\t\t\t\t\t\t\t<img src="/img/upload/'+pics[2]+'" data-src="img/temp/proDet03_big.jpg">\n' +
+									'\t\t\t\t\t\t\t<img src="img/temp/proDet04.jpg" data-src="img/temp/proDet04_big.jpg">\n' +
+									'\t\t\t\t\t\t</div>\n' +
+									'\t\t\t\t\t</div>\n' +
+									'\t\t\t\t\t<div class="fr intro">\n' +
+									'\t\t\t\t\t\t<div class="title">\n' +
+									'\t\t\t\t\t\t\t<h4>'+result.res[0].productName+'</h4>\n' +
+									'\t\t\t\t\t\t\t<p>'+result.res[0].productDescribe+'</p>\n' +
+									'\t\t\t\t\t\t\t<span>￥'+result.res[0].sellPrice+'</span>\n' +
+									'\t\t\t\t\t\t</div>\n' +
+									'\t\t\t\t\t\t<div class="proIntro">\n' +
+									'\t\t\t\t\t\t\t<p>颜色分类</p>\n' +
+									'\t\t\t\t\t\t\t<div class="smallImg clearfix categ">\n' +
+									'\t\t\t\t\t\t\t\t<p class="fl">型号1</p>\n' +
+									'\t\t\t\t\t\t\t\t<p class="fl">型号2</p>\n' +
+									'\t\t\t\t\t\t\t\t<p class="fl">型号3</p>\n' +
+									// '\t\t\t\t\t\t\t\t<p class="fl"><img src="img/temp/prosmall02.jpg" alt="白瓷花瓶+20支兔尾巴草" data-src="img/temp/proBig02.jpg"></p>\n' +
+									// '\t\t\t\t\t\t\t\t<p class="fl"><img src="img/temp/prosmall03.jpg" alt="20支快乐花" data-src="img/temp/proBig03.jpg"></p>\n' +
+									// '\t\t\t\t\t\t\t\t<p class="fl"><img src="img/temp/prosmall04.jpg" alt="20支兔尾巴草" data-src="img/temp/proBig04.jpg"></p>\n' +
+									'\t\t\t\t\t\t\t</div>\n' +
+									'\t\t\t\t\t\t\t<p>数量&nbsp;&nbsp;库存<span>2096</span>件</p>\n' +
+									'\t\t\t\t\t\t\t<div class="num clearfix">\n' +
+									'\t\t\t\t\t\t\t\t<img class="fl sub" src="img/temp/sub.jpg">\n' +
+									'\t\t\t\t\t\t\t\t<span class="fl" contentEditable="true">1</span>\n' +
+									'\t\t\t\t\t\t\t\t<img class="fl add" src="img/temp/add.jpg">\n' +
+									'\t\t\t\t\t\t\t\t<p class="please fl">请选择商品属性!</p>\n' +
+									'\t\t\t\t\t\t\t</div>\n' +
+									'\t\t\t\t\t\t</div>\n' +
+									'\t\t\t\t\t\t<div class="btns clearfix">\n' +
+									'\t\t\t\t\t\t\t<a href="#2"><p class="buy fl">立即购买</p></a>\n' +
+									'\t\t\t\t\t\t\t<a href="#2"><p class="cart fr" id="add-cart">加入购物车</p></a>\n' +
+									'\t\t\t\t\t\t</div>\n' +
+									'\t\t\t\t\t</div>';
+
+							$('#my-goods-detials').append(html);
+						}
+
+						//加入购物车
+						$('#add-cart').click(function () {
+							var count=$('.num span')[0].innerText;
+							$.ajax({
+								url:'/api/cart',
+								data:{
+									productId:id,
+									count:count
+								},
+								dataType:'json',
+								success(result){
+									if (result.code==200){
+										//进入购物车页面
+									}else if (result.code==2){//没有登录
+										//去登录页面
+									}else {
+										console.log(result.msg)
+									}
+								},
+								error(result){
+									console.log(result.msg+"/api/cart  请求失败")
+								}
+							})
+						})
+					},
+					error(result){
+						console.log("/api/category  请求失败")
+					}
+				})
+			});
+
+
+
+
 		</script>
+		<script src="js/pro.js" type="text/javascript" charset="utf-8"></script>
 	</body>
 </html>

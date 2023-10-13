@@ -30,7 +30,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     public List<Product> selectByID(Integer id) {
         QueryWrapper<Product>  queryWrapper=new QueryWrapper<>();
         queryWrapper.lambda().eq(Product::getStatus,1)
-                .eq(Product::getCategoryId,id);
+                .eq(Product::getId,id);
         List<Product> productList = productMapper.selectList(queryWrapper);
         if (productList!=null&& !productList.isEmpty()){
             for (Product product : productList) {

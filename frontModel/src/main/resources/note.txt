@@ -1,0 +1,19 @@
+$.ajax({
+	url:'/api/product',
+	data:{
+		categoryId:id
+	},
+	dataType:'json',
+	success(result){
+		if (result.code==200){
+			var html='';
+			$.each(result.res,function (index,item){
+
+			});
+			$('#proList').append(html);
+		}
+	},
+	error(result){
+		console.log("/api/category  请求失败")
+	}
+})

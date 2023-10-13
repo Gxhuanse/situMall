@@ -21,7 +21,7 @@ public class ProductApiController {
     ProductService productService;
 
     @GetMapping
-    public ResponseBean selectById(Product product){
+    public ResponseBean searchById(Product product){
         ResponseBean responseBean=null;
         try {
 //            List<Product> productList= productService.selectByID(id);
@@ -40,6 +40,19 @@ public class ProductApiController {
         try {
 //            List<Product> productList= productService.selectByID(id);
             IPage<Product> productList= productService.listPage(page,limit,product);
+            responseBean=ResponseBean.ok(productList);
+        } catch (Exception e) {
+            responseBean=ResponseBean.failed("查询失败err");
+            throw new RuntimeException(e);
+        }
+        return responseBean;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseBean selectById(@PathVariable("id") Integer id){
+        ResponseBean responseBean=null;
+        try {
+            List<Product> productList= productService.selectByID(id);
             responseBean=ResponseBean.ok(productList);
         } catch (Exception e) {
             responseBean=ResponseBean.failed("查询失败err");
