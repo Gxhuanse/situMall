@@ -41,4 +41,9 @@ public class CommonController {
         return "redirect:/index";
     }
 
+    @GetMapping("/cart")
+    public String cart(){
+        return "/cart";
+    }
+
 }

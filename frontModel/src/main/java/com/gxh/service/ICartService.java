@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ICartService extends IService<Cart> {
 
+    void add(Cart cart);
 }

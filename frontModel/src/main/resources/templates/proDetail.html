@@ -447,9 +447,9 @@
 							var html='<div class="proImg fl">\n' +
 									'\t\t\t\t\t\t<img class="det" src="img/temp/proDet.jpg" />\n' +
 									'\t\t\t\t\t\t<div class="smallImg clearfix">\n' +
-									'\t\t\t\t\t\t\t<img src="/img/upload/'+pics[0]+'" data-src="img/temp/proDet01_big.jpg">\n' +
-									'\t\t\t\t\t\t\t<img src="/img/upload/'+pics[1]+'" data-src="img/temp/proDet02_big.jpg">\n' +
-									'\t\t\t\t\t\t\t<img src="/img/upload/'+pics[2]+'" data-src="img/temp/proDet03_big.jpg">\n' +
+									'\t\t\t\t\t\t\t<img src="/img/upload/'+pics[0]+'" data-src="/img/upload/'+pics[0]+'">\n' +
+									'\t\t\t\t\t\t\t<img src="/img/upload/'+pics[1]+'" data-src="/img/upload/'+pics[0]+'">\n' +
+									'\t\t\t\t\t\t\t<img src="/img/upload/'+pics[2]+'" data-src="/img/upload/'+pics[0]+'">\n' +
 									'\t\t\t\t\t\t\t<img src="img/temp/proDet04.jpg" data-src="img/temp/proDet04_big.jpg">\n' +
 									'\t\t\t\t\t\t</div>\n' +
 									'\t\t\t\t\t</div>\n' +
@@ -490,17 +490,20 @@
 						$('#add-cart').click(function () {
 							var count=$('.num span')[0].innerText;
 							$.ajax({
-								url:'/api/cart',
+								url:'/api/userCart/cart',
+								type:'post',
 								data:{
-									productId:id,
+									product_id:id,
 									count:count
 								},
 								dataType:'json',
 								success(result){
 									if (result.code==200){
 										//进入购物车页面
+										window.location.href='/cart'
 									}else if (result.code==2){//没有登录
 										//去登录页面
+										window.location.href='/login'
 									}else {
 										console.log(result.msg)
 									}
